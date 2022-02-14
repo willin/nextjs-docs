@@ -5,7 +5,7 @@ import { Category } from '~/entities/category';
 import { CategoryImpl } from '~/interfaces/category.interface';
 import { getFilenameWithOrder } from '~/utils/fs';
 
-const CONTENT_DIR = path.resolve(__dirname, '../../../contents');
+const CONTENT_DIR = path.resolve(process.cwd(), 'contents');
 
 async function walkDir(
   locale: string,

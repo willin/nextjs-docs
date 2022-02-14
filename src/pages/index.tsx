@@ -1,6 +1,7 @@
 import type { GetStaticPropsContext, NextPage } from 'next';
 import { useI18n } from 'next-rosetta';
 import Head from 'next/head';
+import { Footer } from '~/components/footer';
 import { Header } from '~/components/header';
 import { Category } from '~/entities/category';
 import { I18nDict } from '~/entities/i18n';
@@ -39,7 +40,7 @@ const Home: NextPage<{
       <Head>
         <title>{t('common.site_title')}</title>
       </Head>
-      <Header locales={locales} nav={nav} />
+      <Header locales={locales} nav={nav} setOpen={undefined} />
       <header className='bg-white shadow'>
         <div className='max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8'>
           <h1 className='text-3xl font-bold text-gray-900'>
@@ -51,13 +52,14 @@ const Home: NextPage<{
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           {/* Replace with your content */}
           <div className='px-4 py-6 sm:px-0'>
-            <div className='border-4 border-dashed border-gray-200 rounded-lg h-96'>
+            <div className='border-4 border-dashed border-gray-200 rounded-lg'>
               <pre>{JSON.stringify(sidebar, null, 2)}</pre>
             </div>
           </div>
           {/* /End replace */}
         </div>
       </main>
+      <Footer />
     </div>
   );
 };

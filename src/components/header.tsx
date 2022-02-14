@@ -1,10 +1,13 @@
 import { Fragment } from 'react';
 import { Disclosure } from '@headlessui/react';
 import { MenuIcon, XIcon } from '@heroicons/react/outline';
+import Link from 'next/link';
 import { LocalesMenu, LocalesMenuMobile } from './header/locales';
-import { NavLinks } from './header/nav';
+import { NavLinks, NavLinksMobile } from './header/nav';
+import { ThemeToggle } from './atom/theme';
+import { SidebarToggle } from './sidebar';
 
-export function Header({ locales, nav }) {
+export function Header({ locales, nav, setOpen }) {
   return (
     <>
       {/*
@@ -22,12 +25,16 @@ export function Header({ locales, nav }) {
               <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
                 <div className='flex items-center justify-between h-16'>
                   <div className='flex items-center'>
+                    {setOpen && <SidebarToggle setOpen={setOpen} />}
+
                     <div className='flex-shrink-0'>
-                      <img
-                        className='h-8 w-8'
-                        src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
-                        alt='Workflow'
-                      />
+                      <Link href='/'>
+                        <img
+                          className='h-8 w-8'
+                          src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
+                          alt='Workflow'
+                        />
+                      </Link>
                     </div>
                     <div className='hidden md:block'>
                       <NavLinks nav={nav} />
@@ -36,6 +43,7 @@ export function Header({ locales, nav }) {
                   <div className='hidden md:block'>
                     <div className='ml-4 flex items-center md:ml-6'>
                       <LocalesMenu locales={locales} />
+                      <ThemeToggle />
                     </div>
                   </div>
                   <div className='-mr-2 flex md:hidden'>
@@ -57,21 +65,7 @@ export function Header({ locales, nav }) {
 
               <Disclosure.Panel className='md:hidden'>
                 <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
-                  {/* {navigation.map((item) => (
-                    <Disclosure.Button
-                      key={item.name}
-                      as='a'
-                      href={item.href}
-                      className={classNames(
-                        item.current
-                          ? 'bg-gray-900 text-white'
-                          : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                        'block px-3 py-2 rounded-md text-base font-medium'
-                      )}
-                      aria-current={item.current ? 'page' : undefined}>
-                      {item.name}
-                    </Disclosure.Button>
-                  ))} */}
+                  <NavLinksMobile nav={nav} />
                 </div>
                 <div className='pt-4 pb-3 border-t border-gray-700'>
                   <LocalesMenuMobile locales={locales} />

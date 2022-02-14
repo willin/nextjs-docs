@@ -10,6 +10,7 @@
   "dependencies": {
     "@headlessui/react": "^1.4.3",
     "@heroicons/react": "^1.0.5",
+    "framer-motion": "^6.2.6",
     "js-yaml": "^4.1.0",
     "next": "12.0.10",
     "next-compose-plugins": "^2.2.1",

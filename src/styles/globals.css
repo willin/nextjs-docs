@@ -7,6 +7,9 @@
 }
 
 @layer components {
+  pre {
+    @apply w-20 overflow-hidden;
+  }
 }
 
 @layer utilities {

@@ -13,5 +13,5 @@ module.exports = {
     }
   },
   // plugins: [require('@tailwindcss/typography')],
-  content: [fromRoot('./+(app|content)/**/*.+(js|ts|tsx|mdx|md)')]
+  content: [fromRoot('./+(src|content)/**/*.+(js|ts|tsx|mdx|md)')]
 };

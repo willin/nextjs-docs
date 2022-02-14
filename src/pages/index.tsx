@@ -6,9 +6,8 @@ import { I18nDict } from '~/entities/i18n';
 import { i18n } from '~/services/i18n.server';
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const table = await i18n.getTranslations(
-    context.locale || context.defaultLocale
-  );
+  const locale = context.locale || context.defaultLocale;
+  const table = await i18n.getTranslations(locale as string);
   const locales = await i18n.getLocales(context);
   return {
     props: {
@@ -18,7 +17,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
   };
 };
 
-const Home: NextPage = ({ locales }) => {
+const Home: NextPage<{ locales: [string, string][] }> = ({ locales }) => {
   const i18n = useI18n<I18nDict>();
   const { t } = i18n;
 

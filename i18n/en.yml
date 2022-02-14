@@ -1,2 +1,6 @@
 common:
-  site_title: 'Site Title'
+  site_title: Site Title
+
+categories:
+  quickstarts: Quick Start
+  concepts: Concepts

@@ -1,2 +1,6 @@
 common:
-  site_title: '网站标题'
+  site_title: 网站标题
+
+categories:
+  quickstarts: 快速开始
+  concepts: 概念

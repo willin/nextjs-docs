@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { Menu, Transition } from '@headlessui/react';
+import { Menu, Transition, Disclosure } from '@headlessui/react';
 import { TranslateIcon } from '@heroicons/react/outline';
 import { classNames } from '~/utils/common';
 import Link from 'next/link';
@@ -43,5 +43,24 @@ export function LocalesMenu({ locales }) {
         </Menu.Items>
       </Transition>
     </Menu>
+  );
+}
+
+export function LocalesMenuMobile({ locales }) {
+  const router = useRouter();
+  return (
+    <div className='mt-3 px-2 space-y-1'>
+      {locales.map(([key, value]) => (
+        <Disclosure.Button
+          key={`${key}-mobile`}
+          as={Link}
+          href={router.asPath}
+          locale={key}>
+          <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'>
+            {value}
+          </a>
+        </Disclosure.Button>
+      ))}
+    </div>
   );
 }

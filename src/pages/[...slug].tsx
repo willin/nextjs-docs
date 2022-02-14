@@ -1,4 +1,4 @@
-import type { GetStaticPropsContext, NextPage } from 'next';
+import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useI18n } from 'next-rosetta';
 import Head from 'next/head';
 import { Header } from '~/components/header';
@@ -7,14 +7,52 @@ import { I18nDict } from '~/entities/i18n';
 import { categories } from '~/services/category.server';
 import { i18n } from '~/services/i18n.server';
 
-export const getStaticProps = async (context: GetStaticPropsContext) => {
+export const getStaticPaths: GetStaticPaths = async (context) => {
+  const locales = context.locales || [];
+  // getAllCats
+  const cats = await Promise.all(
+    locales.map((l) =>
+      // 获取一级目录
+      categories
+        .getCategories(l)
+        // 获取二级目录
+        .then((subcats) =>
+          Promise.all(subcats.map((c) => categories.getCategories(l, c.path)))
+        )
+        .then((f) => ([] as Category[]).concat(...f))
+    )
+  );
+  // Filter Cate with index
+  // Query Posts
+  const paths = cats.map((r, i) =>
+    r.map((c) => {
+      return {
+        params: {
+          slug: c.path.replace(/^\//, '').split('/')
+        },
+        locale: locales[i]
+      };
+    })
+  );
+  return {
+    paths: [].concat(...(paths as any)),
+    fallback: 'blocking'
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
   const locale = (context.locale || context.defaultLocale) as string;
-  const [table, locales, nav, sidebar] = await Promise.all([
+  const [table, locales, nav] = await Promise.all([
     i18n.getTranslations(locale),
     i18n.getLocales(context),
-    categories.getCategories(locale),
-    categories.getCategories(locale, '2-concepts')
+    categories.getCategories(locale)
   ]);
+  const sidebar = await categories.getCategories(
+    locale,
+    nav
+      .find((x) => x.slug === context.params.slug[0])
+      ?.realPath?.replace(/^\//, '')
+  );
 
   return {
     props: {
@@ -22,7 +60,8 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
       nav,
       sidebar,
       table: table || {}
-    }
+    },
+    revalidate: 3600
   };
 };
 

@@ -47,11 +47,10 @@ export const getStaticProps: GetStaticProps = async (context) => {
     i18n.getLocales(context),
     categories.getCategories(locale)
   ]);
+  const [slug = ''] = (context.params?.slug || []) as string[];
   const sidebar = await categories.getCategories(
     locale,
-    nav
-      .find((x) => x.slug === context.params.slug[0])
-      ?.realPath?.replace(/^\//, '')
+    nav.find((x) => x.slug === slug)?.realPath?.replace(/^\//, '')
   );
 
   return {

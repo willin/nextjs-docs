@@ -1,0 +1,8 @@
+root: true
+extends:
+  - '@willin'
+  - next/core-web-vitals
+rules:
+  arrow-body-style: 0
+  no-shadow: 0
+  '@typescript-eslint/explicit-function-return-type': 0

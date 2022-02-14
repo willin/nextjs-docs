@@ -3,5 +3,6 @@ common:
   edit_on_github: Edit on GitHub
 
 categories:
+  playground: Playground
   quickstarts: Quick Start
   concepts: Concepts

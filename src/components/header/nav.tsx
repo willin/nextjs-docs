@@ -16,6 +16,11 @@ export function NavLinks({ nav }) {
           </a>
         </ActiveLink>
       ))}
+      <ActiveLink activeClassName={'active'} href={'/playground'}>
+        <a className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'>
+          {t('categories.playground')}
+        </a>
+      </ActiveLink>
     </div>
   );
 }
@@ -36,6 +41,11 @@ export function NavLinksMobile({ nav }) {
           </a>
         </Disclosure.Button>
       ))}
+      <Disclosure.Button as={Link} href='/playground'>
+        <a className='block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700'>
+          {t('categories.playground')}
+        </a>
+      </Disclosure.Button>
     </div>
   );
 }

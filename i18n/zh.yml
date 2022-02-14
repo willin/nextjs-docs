@@ -3,5 +3,6 @@ common:
   edit_on_github: 在 Github 上编辑本文
 
 categories:
+  playground: 在线调试
   quickstarts: 快速开始
   concepts: 概念

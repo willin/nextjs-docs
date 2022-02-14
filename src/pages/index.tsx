@@ -10,7 +10,7 @@ import { i18n } from '~/services/i18n.server';
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
   const locale = (context.locale || context.defaultLocale) as string;
-  const [table, locales, nav, sidebar] = await Promise.all([
+  const [table, locales, nav] = await Promise.all([
     i18n.getTranslations(locale),
     i18n.getLocales(context),
     categories.getCategories(locale),
@@ -21,7 +21,6 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     props: {
       locales,
       nav,
-      sidebar,
       table: table || {}
     }
   };
@@ -30,8 +29,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
 const Home: NextPage<{
   locales: [string, string][];
   nav: Category[];
-  sidebar: Category[];
-}> = ({ locales, nav, sidebar }) => {
+}> = ({ locales, nav }) => {
   const i18n = useI18n<I18nDict>();
   const { t } = i18n;
 
@@ -52,8 +50,8 @@ const Home: NextPage<{
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           {/* Replace with your content */}
           <div className='px-4 py-6 sm:px-0'>
-            <div className='border-4 border-dashed border-gray-200 rounded-lg'>
-              <pre>{JSON.stringify(sidebar, null, 2)}</pre>
+            <div className='text-center border-4 h-50 p-10 border-dashed border-gray-200 rounded-lg'>
+              添加主页内容
             </div>
           </div>
           {/* /End replace */}

@@ -30,7 +30,7 @@ export function Header({ locales, nav, setOpen }) {
                     <div className='flex-shrink-0'>
                       <Link href='/'>
                         <img
-                          className='h-8 w-8'
+                          className='h-8 w-8 cursor-pointer'
                           src='https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg'
                           alt='Workflow'
                         />

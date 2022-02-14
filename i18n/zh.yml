@@ -1,5 +1,6 @@
 common:
   site_title: 网站标题
+  edit_on_github: 在 Github 上编辑本文
 
 categories:
   quickstarts: 快速开始

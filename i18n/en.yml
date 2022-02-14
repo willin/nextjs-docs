@@ -1,5 +1,6 @@
 common:
   site_title: Site Title
+  edit_on_github: Edit on GitHub
 
 categories:
   quickstarts: Quick Start

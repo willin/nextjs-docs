@@ -19,7 +19,6 @@ async function walkDir(
       }
     )
     .catch(() => []);
-
   let cats = await Promise.all(
     files
       .filter((f) => f.isDirectory())
@@ -35,13 +34,21 @@ async function walkDir(
       })
       // eslint-disable-next-line no-nested-ternary
       .sort((a, b) => (a.order === -1 ? 0 : a.order - b.order > 0 ? 1 : -1))
-      .map(async (cat) => ({
-        ...cat,
-        hasIndex: await fsp
-          .lstat(path.resolve(CONTENT_DIR, locale, cat.realPath, 'index.mdx'))
+      .map(async (cat) => {
+        const hasIndex = await fsp
+          .lstat(path.join(CONTENT_DIR, locale, cat.realPath, 'index.mdx'))
           .then(() => true)
-          .catch(() => false)
-      }))
+          .catch(() => false);
+        return {
+          ...cat,
+          ...(hasIndex
+            ? {
+                realPath: `${cat.realPath}/index.mdx`
+              }
+            : {}),
+          hasIndex
+        };
+      })
   );
   if (parentCategory && cats.length > 0) {
     const result = await Promise.all(cats.map((c) => walkDir(locale, c)));

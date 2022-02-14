@@ -10,7 +10,7 @@ import { I18nImpl } from '~/interfaces/i18n.interface';
 import { I18nDict } from '~/entities/i18n';
 import { getYaml } from '~/utils/fs';
 
-const I18N_DIR = path.resolve(__dirname, '../../../i18n');
+const I18N_DIR = path.resolve(process.cwd(), 'i18n');
 
 class I18n implements I18nImpl {
   @Cacheable(3600e3, ResultType.Promise)

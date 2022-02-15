@@ -7,13 +7,8 @@ import remarkGfm from 'remark-gfm';
 const CONTENT_DIR = path.resolve(process.cwd(), 'contents');
 
 export const getMdx = async (locale: string, realPath: string) => {
-  const file = path.join(CONTENT_DIR, locale, realPath);
-  const source = await fsp.readFile(file, 'utf-8');
-  const dir = path.join(
-    CONTENT_DIR,
-    locale,
-    realPath.replace(/index.mdx$/, '')
-  );
+  const dir = path.join(CONTENT_DIR, locale, realPath);
+  const source = await fsp.readFile(path.join(dir, 'index.mdx'), 'utf-8');
 
   const fileList = await fsp
     .readdir(dir)

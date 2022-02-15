@@ -26,6 +26,7 @@
     "react-dom": "17.0.2",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.5.4",
+    "shiki": "^0.10.0",
     "swagger-ui-react": "^4.5.0",
     "v0": "^1.1.1"
   },

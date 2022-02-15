@@ -1,8 +1,8 @@
 import { bundleMDX } from 'mdx-bundler';
 import fsp from 'fs/promises';
 import path from 'path';
-import { remarkCodeHike } from '@code-hike/mdx';
-import theme from '~/utils/highlight';
+import rehypePrismPlus from 'rehype-prism-plus';
+import remarkGfm from 'remark-gfm';
 
 const CONTENT_DIR = path.resolve(process.cwd(), 'contents');
 
@@ -27,17 +27,16 @@ export const getMdx = async (locale: string, realPath: string) => {
   const { code, frontmatter } = await bundleMDX({
     source,
     files: Object.fromEntries(files),
+    // esbuildOptions(options) {
+    //   return options;
+    // },
     xdmOptions(options) {
       // eslint-disable-next-line no-param-reassign
-      options.remarkPlugins = [
-        ...(options.remarkPlugins || []),
-        [
-          remarkCodeHike,
-          {
-            theme,
-            lineNumbers: true
-          }
-        ]
+      options.remarkPlugins = [...(options.remarkPlugins || []), remarkGfm];
+      // eslint-disable-next-line no-param-reassign
+      options.rehypePlugins = [
+        ...(options.rehypePlugins || []),
+        [rehypePrismPlus, { ignoreMissing: true }]
       ];
       return options;
     }

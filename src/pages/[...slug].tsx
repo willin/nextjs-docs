@@ -1,4 +1,3 @@
-import '@code-hike/mdx/dist/index.css';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useI18n } from 'next-rosetta';
 import Head from 'next/head';
@@ -49,7 +48,7 @@ const Home: NextPage<{
           </h1>
         </div>
       </header>
-      <main className='flex'>
+      <main className='flex bg-white'>
         <Sidebar open={open} setOpen={setOpen} />
         <div className='grow max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           {/* Replace with your content */}

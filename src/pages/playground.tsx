@@ -25,7 +25,7 @@ const ApiDoc: NextPage<{
         <title>{t('common.site_title')}</title>
       </Head>
       <Header locales={locales} nav={nav} setOpen={undefined} />
-      <main>
+      <main className='bg-white'>
         <div className='max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           {/* Replace with your content */}
           <div className='px-4 py-6 sm:px-0 bg-white rounded-lg'>

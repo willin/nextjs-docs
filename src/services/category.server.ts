@@ -41,15 +41,11 @@ async function walkDir(
           .catch(() => false);
         return {
           ...cat,
-          ...(hasIndex
-            ? {
-                realPath: `${cat.realPath}/index.mdx`
-              }
-            : {}),
           hasIndex
         };
       })
   );
+
   if (parentCategory && cats.length > 0) {
     const result = await Promise.all(cats.map((c) => walkDir(locale, c)));
     cats = ([] as Category[]).concat(...cats, ...result);
@@ -61,7 +57,12 @@ async function walkDir(
 class Categories implements CategoryImpl {
   @Cacheable(3600e3, ResultType.Promise)
   getCategories(locale: string, realPath?: string): Promise<Category[]> {
-    return walkDir(locale, realPath ? ({ realPath } as Category) : undefined);
+    return walkDir(
+      locale,
+      realPath
+        ? ({ realPath, path: realPath.replace(/\d+-/, '/') } as Category)
+        : undefined
+    );
   }
 }
 

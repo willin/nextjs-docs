@@ -1,5 +1,8 @@
 import { BookOpenIcon } from '@heroicons/react/outline';
+import { useI18n } from 'next-rosetta';
+import Link from 'next/link';
 import { useEffect } from 'react';
+import { Category } from '~/entities/category';
 
 export function SidebarToggle({ setOpen }) {
   return (
@@ -13,7 +16,41 @@ export function SidebarToggle({ setOpen }) {
   );
 }
 
-export function Sidebar({ open, setOpen }) {
+function NavItems({
+  items,
+  slug,
+  className
+}: {
+  slug?: string;
+  items: Category[];
+  className?: string;
+}) {
+  const i18n = useI18n();
+
+  return (
+    <ul className={className || ''}>
+      {items
+        .filter((item) => item.parentSlug === (slug || ''))
+        .map((item) => (
+          <li key={item.slug}>
+            <Link passHref href={`/${i18n.locale()}${item.path}`}>
+              <a className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white'>
+                {item.slug}
+              </a>
+            </Link>
+            {items.filter((i) => i.parentSlug === item.slug).length > 0 &&
+              NavItems({
+                slug: item.slug,
+                className: 'pl-2',
+                items
+              })}
+          </li>
+        ))}
+    </ul>
+  );
+}
+
+export function Sidebar({ open, setOpen, sidebar }) {
   function clickHandler() {
     setOpen((t) => !t);
     document.removeEventListener('click', clickHandler);
@@ -30,28 +67,7 @@ export function Sidebar({ open, setOpen }) {
       className={`${
         open ? '' : '-translate-x-full'
       } bg-gray-800 text-gray-400  w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform md:relative md:translate-x-0 transition duration-200 ease-in-out`}>
-      <nav>
-        <a
-          href='#'
-          className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white'>
-          Home
-        </a>
-        <a
-          href=''
-          className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white'>
-          About
-        </a>
-        <a
-          href=''
-          className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white'>
-          Features
-        </a>
-        <a
-          href=''
-          className='block py-2.5 px-4 rounded transition duration-200 hover:bg-blue-700 hover:text-white'>
-          Pricing
-        </a>
-      </nav>
+      <NavItems items={sidebar} />
     </div>
   );
 }

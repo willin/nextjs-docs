@@ -1,4 +1,3 @@
-import '@code-hike/mdx/dist/index.css';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useI18n } from 'next-rosetta';
 import Head from 'next/head';
@@ -27,7 +26,7 @@ const Home: NextPage<{
   current: Category;
   source: any;
   frontMatter: any;
-}> = ({ locales, nav, source, frontMatter, locale, current }) => {
+}> = ({ locales, nav, source, sidebar, frontMatter, locale, current }) => {
   const i18n = useI18n<I18nDict>();
   const { t } = i18n;
 
@@ -49,8 +48,8 @@ const Home: NextPage<{
           </h1>
         </div>
       </header>
-      <main className='flex'>
-        <Sidebar open={open} setOpen={setOpen} />
+      <main className='flex bg-white'>
+        <Sidebar open={open} setOpen={setOpen} sidebar={sidebar} />
         <div className='grow max-w-7xl mx-auto py-6 sm:px-6 lg:px-8'>
           {/* Replace with your content */}
           <div className='px-4 py-6 sm:px-0'>
@@ -76,12 +75,15 @@ export const getStaticProps: GetStaticProps = async (context) => {
     i18n.getLocales(context),
     categories.getCategories(locale)
   ]);
-  const [slug = ''] = (context.params?.slug || []) as string[];
+  const slugs = (context.params?.slug || []) as string[];
+  const [slug = ''] = slugs;
   const sidebar = await categories.getCategories(
     locale,
     nav.find((x) => x.slug === slug)?.realPath?.replace(/^\//, '')
   );
-  const current = [...nav, ...sidebar].find((x) => x.slug === slug);
+  const current = [...nav, ...sidebar].find(
+    (x) => x.slug === slugs[slugs.length - 1]
+  );
   if (!current) {
     throw new Error('404');
   }
@@ -116,16 +118,17 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
     )
   );
   // Filter Cate with index
-  // Query Posts
   const paths = cats.map((r, i) =>
-    r.map((c) => {
-      return {
-        params: {
-          slug: c.path.replace(/^\//, '').split('/')
-        },
-        locale: locales[i]
-      };
-    })
+    r
+      .filter((c) => c.hasIndex)
+      .map((c) => {
+        return {
+          params: {
+            slug: c.path.replace(/^\//, '').split('/')
+          },
+          locale: locales[i]
+        };
+      })
   );
 
   return {

@@ -17,7 +17,8 @@ export function EditOnGithub({
       <a
         href={`http://github.com/${GithubConfig.repo}/edit/${GithubConfig.branch}/contents/${locale}${current.realPath}`}
         target='_blank'
-        rel='noopener noreferrer'>
+        rel='noopener noreferrer'
+        className='text-gray-700'>
         <DocumentTextIcon
           className='inline-block h-6 w-6 align-text-bottom'
           aria-hidden='true'

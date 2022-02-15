@@ -1,3 +1,4 @@
+/* eslint-disable global-require */
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const path = require('path');
 
@@ -13,5 +14,5 @@ module.exports = {
     }
   },
   plugins: [require('@tailwindcss/typography')],
-  content: [fromRoot('./+(src|content)/**/*.+(js|ts|tsx|mdx|md)')]
+  content: [fromRoot('./+(src|contents)/**/*.+(js|ts|tsx|mdx|md)')]
 };

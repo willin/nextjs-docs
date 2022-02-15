@@ -1,8 +1,10 @@
+import '@code-hike/mdx/dist/index.css';
 import type { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useI18n } from 'next-rosetta';
 import Head from 'next/head';
-import { useState } from 'react';
-import { MDXRemote } from 'next-mdx-remote';
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+import { getMDXComponent } from 'mdx-bundler/client';
 import { Footer } from '~/components/footer';
 import { Header } from '~/components/header';
 import { Sidebar } from '~/components/sidebar';
@@ -11,11 +13,10 @@ import { I18nDict } from '~/entities/i18n';
 import { categories } from '~/services/category.server';
 import { i18n } from '~/services/i18n.server';
 import { getMdx } from '~/services/mdx.server';
-import Link from 'next/link';
 import { EditOnGithub } from '~/components/atom/edit-link';
 
 const components = {
-  a: Link
+  a: Link as any
 };
 
 const Home: NextPage<{
@@ -31,6 +32,7 @@ const Home: NextPage<{
   const { t } = i18n;
 
   const [open, setOpen] = useState<boolean>(false);
+  const Component = useMemo(() => getMDXComponent(source), [source]);
 
   return (
     <div>
@@ -53,7 +55,7 @@ const Home: NextPage<{
           {/* Replace with your content */}
           <div className='px-4 py-6 sm:px-0'>
             <div className='prose max-w-none'>
-              <MDXRemote {...source} components={components} />
+              <Component components={components} />
             </div>
           </div>
           {/* /End replace */}

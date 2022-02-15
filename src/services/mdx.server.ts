@@ -1,26 +1,50 @@
-import matter from 'gray-matter';
-import { serialize } from 'next-mdx-remote/serialize';
+import { bundleMDX } from 'mdx-bundler';
 import fsp from 'fs/promises';
 import path from 'path';
+import { remarkCodeHike } from '@code-hike/mdx';
+import theme from '~/utils/highlight';
 
 const CONTENT_DIR = path.resolve(process.cwd(), 'contents');
 
 export const getMdx = async (locale: string, realPath: string) => {
   const file = path.join(CONTENT_DIR, locale, realPath);
   const source = await fsp.readFile(file, 'utf-8');
-  const { content, data } = matter(source);
+  const dir = path.join(
+    CONTENT_DIR,
+    locale,
+    realPath.replace(/index.mdx$/, '')
+  );
 
-  const mdxSource = await serialize(content, {
-    // Optionally pass remark/rehype plugins
-    mdxOptions: {
-      remarkPlugins: [],
-      rehypePlugins: []
-    },
-    scope: data
+  const fileList = await fsp
+    .readdir(dir)
+    .then((l) => l.filter((f) => f.endsWith('ts') || f.endsWith('tsx')));
+  const files = await Promise.all(
+    fileList.map(async (f) => [
+      `./${f}`,
+      await fsp.readFile(path.join(dir, f), 'utf-8')
+    ])
+  );
+  const { code, frontmatter } = await bundleMDX({
+    source,
+    files: Object.fromEntries(files),
+    xdmOptions(options) {
+      // eslint-disable-next-line no-param-reassign
+      options.remarkPlugins = [
+        ...(options.remarkPlugins || []),
+        [
+          remarkCodeHike,
+          {
+            theme,
+            lineNumbers: true
+          }
+        ]
+      ];
+      return options;
+    }
   });
 
   return {
-    source: mdxSource,
-    frontMatter: data
+    source: code,
+    frontMatter: frontmatter
   };
 };

@@ -32,7 +32,12 @@ export const getMdx = async (locale: string, realPath: string) => {
   );
   const { code, frontmatter } = await bundleMDX({
     source,
-    files: Object.fromEntries([...files, [pluginName, plugin]]),
+    files: Object.fromEntries([
+      ...files,
+      [pluginName, plugin],
+      // Vercel
+      ['/var/task/node_modules/@code-hike/mdx/dist/components.cjs.js', plugin]
+    ]),
     xdmOptions(options) {
       // eslint-disable-next-line no-param-reassign
       options.remarkPlugins = [

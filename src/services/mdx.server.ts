@@ -15,12 +15,6 @@ export const getMdx = async (locale: string, realPath: string) => {
     realPath.replace(/index.mdx$/, '')
   );
 
-  const pluginName = '@code-hike/mdx/dist/components.cjs.js';
-  const plugin = await fsp.readFile(
-    path.join(process.cwd(), 'node_modules', pluginName),
-    'utf-8'
-  );
-
   const fileList = await fsp
     .readdir(dir)
     .then((l) => l.filter((f) => f.endsWith('ts') || f.endsWith('tsx')));
@@ -32,12 +26,7 @@ export const getMdx = async (locale: string, realPath: string) => {
   );
   const { code, frontmatter } = await bundleMDX({
     source,
-    files: Object.fromEntries([
-      ...files,
-      [pluginName, plugin],
-      // Vercel
-      ['/var/task/node_modules/@code-hike/mdx/dist/components.cjs.js', plugin]
-    ]),
+    files: Object.fromEntries(files),
     xdmOptions(options) {
       // eslint-disable-next-line no-param-reassign
       options.remarkPlugins = [
